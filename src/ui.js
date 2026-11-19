@@ -1,4 +1,4 @@
-﻿import { CATEGORIES, FALLBACK_IMAGE_SVG, STORE_INFO } from './products.js';
+import { CATEGORIES, FALLBACK_IMAGE_SVG, STORE_INFO } from './products.js';
 
 export function formatRupiah(amount) {
   return new Intl.NumberFormat('id-ID', {
@@ -8,18 +8,26 @@ export function formatRupiah(amount) {
   }).format(amount);
 }
 
-export function buildWhatsAppUrl(product) {
+export function normalizeInternationalPhone(rawPhone) {
+  const digitsOnly = String(rawPhone ?? '').replace(/\D/g, '');
+  return /^[1-9]\d{7,14}$/.test(digitsOnly) ? digitsOnly : '';
+}
+
+export function buildWhatsAppUrl(nomor, produk) {
+  const validPhone = normalizeInternationalPhone(nomor);
+  if (!validPhone || !produk) return '#';
+
   const message = [
     'Halo Admin Cau Chocolates Bali!',
     'Saya ingin memesan produk olahan kakao berikut:',
-    `- Produk: ${product.nama}`,
-    `- Harga: ${formatRupiah(product.harga)}`,
+    `- Produk: ${produk.nama}`,
+    `- Harga: ${formatRupiah(produk.harga)}`,
     `- Asal Gerai: ${STORE_INFO.subtitle}, Tabanan, Bali`,
     '',
     'Mohon info ketersediaan dan ongkos kirim. Terima kasih!'
   ].join('\n');
 
-  return `https://wa.me/${STORE_INFO.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${validPhone}?text=${encodeURIComponent(message)}`;
 }
 
 function el(tag, options = {}, children = []) {
@@ -209,24 +217,54 @@ function renderToolbar(store) {
 
 function renderProductGrid(store) {
   const products = store.getFilteredProducts();
+  const totalAll = store.products.length;
+  const hasActiveFilter =
+    store.filters.search.trim() !== '' || store.filters.kategori !== 'Semua';
+
   const section = el('section', {
     className: 'catalog-section',
     attrs: { id: 'katalog-produk', 'aria-label': 'Daftar Produk Katalog' }
   });
 
-  if (products.length === 0) {
-    const resetFilterBtn = el('button', {
+  const statusRow = el('div', {
+    className: 'catalog-status',
+    attrs: { 'aria-live': 'polite' }
+  }, [
+    el('p', {
+      className: 'catalog-count',
+      text: `Menampilkan ${products.length} dari ${totalAll} produk Cau Chocolates Bali`
+    })
+  ]);
+
+  if (hasActiveFilter) {
+    const clearBtn = el('button', {
       className: 'btn btn-secondary',
-      text: 'Reset Pencarian & Filter',
+      text: 'Reset Filter',
       attrs: { type: 'button' }
     });
-    resetFilterBtn.addEventListener('click', () => {
-      store.setFilter({ search: '', kategori: 'Semua', sort: 'unggulan' });
+    clearBtn.addEventListener('click', () => store.resetFilters());
+    statusRow.appendChild(clearBtn);
+  }
+
+  section.appendChild(statusRow);
+
+  if (products.length === 0) {
+    const resetFilterBtn = el('button', {
+      className: 'btn btn-primary',
+      text: 'Tampilkan Semua Produk',
+      attrs: { type: 'button' }
     });
+    resetFilterBtn.addEventListener('click', () => store.resetFilters());
 
     section.appendChild(
-      el('div', { className: 'empty-state' }, [
-        el('p', { text: 'Tidak ada produk cokelat yang sesuai dengan pencarian atau filter Anda.' }),
+      el('div', { className: 'empty-state', attrs: { role: 'status' } }, [
+        el('h2', {
+          className: 'empty-title',
+          text: 'Produk Cokelat Tidak Ditemukan'
+        }),
+        el('p', {
+          text: 'Tidak ada varian produk yang cocok dengan kata kunci atau kategori yang dipilih.'
+        }),
         resetFilterBtn
       ])
     );
@@ -282,7 +320,7 @@ function renderProductCard(product) {
       className: 'btn btn-wa',
       text: 'Pesan via WhatsApp',
       attrs: {
-        href: buildWhatsAppUrl(product),
+        href: buildWhatsAppUrl(STORE_INFO.whatsappNumber, product),
         target: '_blank',
         rel: 'noopener noreferrer',
         'aria-label': `Pesan ${product.nama} via WhatsApp`

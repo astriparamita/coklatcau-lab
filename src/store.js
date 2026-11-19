@@ -1,9 +1,34 @@
-﻿import { CATEGORIES, INITIAL_PRODUCTS } from './products.js';
+import { CATEGORIES, INITIAL_PRODUCTS } from './products.js';
 
 const STORAGE_KEY = 'cau_chocolates_catalog_data_v1';
 
 function cloneSeedProducts() {
   return INITIAL_PRODUCTS.map((item) => ({ ...item }));
+}
+
+export function filterProducts(products, criteria = {}) {
+  if (!Array.isArray(products)) return [];
+
+  const query = typeof criteria.search === 'string' ? criteria.search.trim().toLowerCase() : '';
+  const kategori = typeof criteria.kategori === 'string' ? criteria.kategori : 'Semua';
+  const sort = typeof criteria.sort === 'string' ? criteria.sort : 'unggulan';
+
+  const filtered = products.filter((product) => {
+    const matchesCategory = kategori === 'Semua' || product.kategori === kategori;
+    const nama = String(product.nama || '').toLowerCase();
+    const deskripsi = String(product.deskripsi || '').toLowerCase();
+    const matchesQuery = query === '' || nama.includes(query) || deskripsi.includes(query);
+
+    return matchesCategory && matchesQuery;
+  });
+
+  return [...filtered].sort((a, b) => {
+    if (sort === 'harga-asc') return a.harga - b.harga;
+    if (sort === 'harga-desc') return b.harga - a.harga;
+    if (sort === 'nama-asc') return a.nama.localeCompare(b.nama, 'id');
+    if (a.unggulan !== b.unggulan) return a.unggulan ? -1 : 1;
+    return a.nama.localeCompare(b.nama, 'id');
+  });
 }
 
 export function validateProductInput(raw) {
@@ -120,27 +145,17 @@ class CatalogStore {
     this.notify();
   }
 
+  resetFilters() {
+    this.filters = {
+      search: '',
+      kategori: 'Semua',
+      sort: 'unggulan'
+    };
+    this.notify();
+  }
+
   getFilteredProducts() {
-    const query = this.filters.search.trim().toLowerCase();
-    const { kategori, sort } = this.filters;
-
-    const filtered = this.products.filter((product) => {
-      const matchesCategory =
-        kategori === 'Semua' || product.kategori === kategori;
-      const matchesQuery =
-        query === '' ||
-        product.nama.toLowerCase().includes(query) ||
-        product.deskripsi.toLowerCase().includes(query);
-      return matchesCategory && matchesQuery;
-    });
-
-    return filtered.sort((a, b) => {
-      if (sort === 'harga-asc') return a.harga - b.harga;
-      if (sort === 'harga-desc') return b.harga - a.harga;
-      if (sort === 'nama-asc') return a.nama.localeCompare(b.nama, 'id');
-      if (a.unggulan !== b.unggulan) return a.unggulan ? -1 : 1;
-      return a.nama.localeCompare(b.nama, 'id');
-    });
+    return filterProducts(this.products, this.filters);
   }
 
   getMetrics() {

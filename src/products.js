@@ -1,4 +1,4 @@
-﻿export const STORE_INFO = {
+export const STORE_INFO = {
   name: 'Cau Chocolates Bali',
   subtitle: 'Cau Chocolates Factory & Restaurant',
   address: 'Jl. Raya Marga-Apuan, Cau, Kec. Marga, Kabupaten Tabanan, Bali',
@@ -12,24 +12,50 @@ export const CATEGORIES = [
   'Kudapan & Cinderamata'
 ];
 
-export const FALLBACK_IMAGE_SVG =
-  'data:image/svg+xml;utf8,' +
-  encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">
-      <rect width="400" height="260" fill="#F3ECE1"/>
-      <rect x="16" y="16" width="368" height="228" rx="14" fill="#E6DAC8" stroke="#2D4F3E" stroke-width="2" stroke-dasharray="6 6"/>
-      <g transform="translate(200, 108)" fill="#2D4F3E">
-        <ellipse cx="0" cy="0" rx="26" ry="38" fill="#4A3222"/>
-        <path d="M-8 -30 Q0 0 -8 30 M0 -36 L0 36 M8 -30 Q0 0 8 30" stroke="#F3ECE1" stroke-width="2.5" fill="none"/>
-      </g>
-      <text x="200" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#233329">
+function escapeXml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+export function createProductSvgDataUri(title, category, accentHex = '#4A3222') {
+  const safeTitle = escapeXml(String(title).slice(0, 32));
+  const safeCat = escapeXml(String(category).slice(0, 30));
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+      <rect width="480" height="300" fill="#F3ECE1"/>
+      <rect x="16" y="16" width="448" height="268" rx="16" fill="#FAF6F0" stroke="#2D4F3E" stroke-width="2" stroke-dasharray="6 5"/>
+      <rect x="165" y="38" width="150" height="24" rx="12" fill="#2D4F3E"/>
+      <text x="240" y="54" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">
         Cau Chocolates Bali
       </text>
-      <text x="200" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#4E5D52">
-        Olahan Kakao Organik Tabanan
+      <circle cx="240" cy="122" r="38" fill="${accentHex}" opacity="0.14"/>
+      <ellipse cx="240" cy="122" rx="22" ry="34" fill="${accentHex}"/>
+      <path d="M232 95 Q240 122 232 149 M240 89 L240 155 M248 95 Q240 122 248 149" stroke="#FAF6F0" stroke-width="2.2" fill="none"/>
+      <text x="240" y="188" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1E2923">
+        ${safeTitle}
+      </text>
+      <text x="240" y="212" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="600" fill="#2D4F3E">
+        ${safeCat}
+      </text>
+      <text x="240" y="246" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#4A584F">
+        Kakao Organik Marga · Tabanan, Bali
       </text>
     </svg>
-  `);
+  `.trim();
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+export const FALLBACK_IMAGE_SVG = createProductSvgDataUri(
+  'Cau Chocolates Bali',
+  'Olahan Kakao Organik',
+  '#4A3222'
+);
 
 export const INITIAL_PRODUCTS = [
   {
@@ -39,8 +65,8 @@ export const INITIAL_PRODUCTS = [
     harga: 45000,
     stok: 15,
     deskripsi:
-      'Cokelat hitam organik murni dari biji kakao fermentasi khas Marga, Tabanan dengan cita rasa pekat dan sedikit rasa buah tropis.',
-    imageUrl: '/assets/products/cau-dark-80.jpg',
+      'Cokelat hitam organik murni dari biji kakao fermentasi khas Marga, Tabanan dengan cita rasa pekat dan sentuhan buah tropis.',
+    imageUrl: createProductSvgDataUri('Dark Chocolate 80%', 'Dark Chocolate', '#3B2314'),
     unggulan: true
   },
   {
@@ -50,8 +76,8 @@ export const INITIAL_PRODUCTS = [
     harga: 40000,
     stok: 20,
     deskripsi:
-      'Cokelat susu lembut berpadu dengan susu murni lokal Bali, menciptakan tekstur lumer dan manis pas di lidah.',
-    imageUrl: '/assets/products/cau-milk-heritage.jpg',
+      'Cokelat susu lembut berpadu dengan susu murni lokal Bali, menciptakan tekstur lumer dan manis seimbang di lidah.',
+    imageUrl: createProductSvgDataUri('Heritage Milk Chocolate', 'Milk Chocolate', '#6E472B'),
     unggulan: true
   },
   {
@@ -61,8 +87,8 @@ export const INITIAL_PRODUCTS = [
     harga: 55000,
     stok: 12,
     deskripsi:
-      'Bubuk kakao murni tanpa pemanis tambahan, ideal untuk minuman hangat, adonan kue, atau smoothie sehat harian.',
-    imageUrl: '/assets/products/cau-cocoa-powder.jpg',
+      'Bubuk kakao murni tanpa pemanis tambahan, ideal untuk seduhan cokelat hangat, adonan kue, maupun smoothie harian.',
+    imageUrl: createProductSvgDataUri('Pure Cocoa Powder 250g', 'Bubuk & Biji Kakao', '#543521'),
     unggulan: false
   },
   {
@@ -72,8 +98,8 @@ export const INITIAL_PRODUCTS = [
     harga: 35000,
     stok: 18,
     deskripsi:
-      'Biji kakao sangrai pilihan bertabur garam laut tradisional Kusamba Bali, cemilan kaya antioksidan dan renyah.',
-    imageUrl: '/assets/products/cau-roasted-beans.jpg',
+      'Biji kakao sangrai pilihan bertabur garam laut tradisional Kusamba Bali, camilan renyah kaya antioksidan.',
+    imageUrl: createProductSvgDataUri('Roasted Cocoa & Sea Salt', 'Kudapan & Cinderamata', '#2D4F3E'),
     unggulan: false
   },
   {
@@ -84,7 +110,7 @@ export const INITIAL_PRODUCTS = [
     stok: 8,
     deskripsi:
       'Kombinasi eksotis cokelat hitam 60% dengan sensasi hangat jahe merah Bali asli perkebunan Tabanan.',
-    imageUrl: '/assets/products/cau-dark-ginger.jpg',
+    imageUrl: createProductSvgDataUri('Dark 60% Bali Ginger', 'Dark Chocolate', '#4A3222'),
     unggulan: true
   },
   {
@@ -95,7 +121,7 @@ export const INITIAL_PRODUCTS = [
     stok: 0,
     deskripsi:
       'Pecahan biji kakao mentah organik kaya magnesium dan serat. (Stok habis / menunggu masa panen baru).',
-    imageUrl: '/assets/products/cau-cocoa-nibs.jpg',
+    imageUrl: createProductSvgDataUri('Raw Cocoa Nibs 200g', 'Bubuk & Biji Kakao', '#5C4033'),
     unggulan: false
   },
   {
@@ -105,8 +131,8 @@ export const INITIAL_PRODUCTS = [
     harga: 30000,
     stok: 25,
     deskripsi:
-      'Teh herbal aromatik yang diseduh dari kulit biji kakao pilihan dengan aroma cokelat alami yang menenangkan tanpa kafein tinggi.',
-    imageUrl: '/assets/products/cau-cocoa-tea.jpg',
+      'Teh herbal aromatik dari kulit biji kakao pilihan dengan aroma cokelat alami yang menenangkan tanpa kafein tinggi.',
+    imageUrl: createProductSvgDataUri('Balinese Cocoa Tea 100g', 'Kudapan & Cinderamata', '#2D4F3E'),
     unggulan: false
   },
   {
@@ -117,7 +143,7 @@ export const INITIAL_PRODUCTS = [
     stok: 10,
     deskripsi:
       'Paduan istimewa kakao organik Cau dan biji kopi Robusta Pupuan Tabanan dengan aroma harum dan rasa seimbang.',
-    imageUrl: '/assets/products/cau-coffee-bar.jpg',
+    imageUrl: createProductSvgDataUri('Artisan Coffee Bar 55%', 'Dark Chocolate', '#3E2723'),
     unggulan: false
   }
 ];
