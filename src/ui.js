@@ -65,11 +65,11 @@ export function renderApp(root, store) {
     el('div', { className: 'container footer-inner' }, [
       el('p', {
         className: 'footer-brand',
-        text: `${STORE_INFO.subtitle} — ${STORE_INFO.address}`
+        text: `${STORE_INFO.subtitle} â€” ${STORE_INFO.address}`
       }),
       el('p', {
         className: 'footer-note',
-        text: 'Katalog Digital UMKM • Data tersimpan lokal di peramban Anda'
+        text: 'Katalog Digital UMKM â€¢ Data tersimpan lokal di peramban Anda'
       })
     ])
   ]);
@@ -84,7 +84,7 @@ function renderNavbar(store) {
     el('span', { className: 'brand-title', text: STORE_INFO.name }),
     el('span', {
       className: 'brand-subtitle',
-      text: 'Marga, Tabanan · Bali'
+      text: 'Marga, Tabanan Â· Bali'
     })
   ]);
 
@@ -292,14 +292,15 @@ function renderProductCard(product) {
     }
   });
   img.addEventListener('error', () => {
-    if (img.src !== FALLBACK_IMAGE_SVG) {
+    if (!img.dataset.fallbackApplied) {
+      img.dataset.fallbackApplied = '1';
       img.src = FALLBACK_IMAGE_SVG;
     }
   });
 
   const badges = el('div', { className: 'card-badges' });
   if (product.unggulan) {
-    badges.appendChild(el('span', { className: 'badge badge-featured', text: '★ Unggulan' }));
+    badges.appendChild(el('span', { className: 'badge badge-featured', text: 'â˜… Unggulan' }));
   }
   badges.appendChild(
     el('span', {
@@ -603,7 +604,7 @@ function renderInventoryTable(store) {
       el('td', {}, [
         el('div', { className: 'table-prod-name', text: product.nama }),
         product.unggulan
-          ? el('span', { className: 'mini-badge', text: '★ Unggulan' })
+          ? el('span', { className: 'mini-badge', text: 'â˜… Unggulan' })
           : null
       ]),
       el('td', { text: product.kategori }),

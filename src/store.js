@@ -38,9 +38,12 @@ export function validateProductInput(raw) {
   const harga = Number(raw.harga);
   const stok = Number(raw.stok);
   const deskripsi = typeof raw.deskripsi === 'string' ? raw.deskripsi.trim() : '';
+  const rawImage = typeof raw.imageUrl === 'string' ? raw.imageUrl.trim() : '';
+  const isSafeLocalPath = rawImage.startsWith('/') && !rawImage.startsWith('//');
+  const isSafeSvgData = rawImage.startsWith('data:image/svg+xml');
   const imageUrl =
-    typeof raw.imageUrl === 'string' && raw.imageUrl.trim() !== ''
-      ? raw.imageUrl.trim()
+    isSafeLocalPath || isSafeSvgData
+      ? rawImage
       : '/assets/products/default-cacao.jpg';
   const unggulan = Boolean(raw.unggulan);
 
@@ -78,7 +81,7 @@ function isValidProductRecord(item) {
   return validateProductInput(item).valid;
 }
 
-class CatalogStore {
+export class CatalogStore {
   constructor() {
     this.products = this.loadFromStorage();
     this.viewMode = 'catalog';
@@ -102,7 +105,7 @@ class CatalogStore {
 
   loadFromStorage() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = globalThis.localStorage?.getItem(STORAGE_KEY);
       if (!raw) {
         const seed = cloneSeedProducts();
         this.saveToStorage(seed);
@@ -124,7 +127,7 @@ class CatalogStore {
 
   saveToStorage(products = this.products) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+      globalThis.localStorage?.setItem(STORAGE_KEY, JSON.stringify(products));
     } catch (error) {
       console.error('Gagal menyimpan data ke localStorage:', error);
     }
