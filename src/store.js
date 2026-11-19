@@ -84,7 +84,7 @@ function isValidProductRecord(item) {
 export class CatalogStore {
   constructor() {
     this.products = this.loadFromStorage();
-    this.viewMode = 'catalog';
+    this.viewMode = 'info';
     this.filters = {
       search: '',
       kategori: 'Semua',
@@ -134,9 +134,9 @@ export class CatalogStore {
   }
 
   setViewMode(mode) {
-    if (mode === 'catalog' || mode === 'dashboard') {
+    if (mode === 'info' || mode === 'catalog' || mode === 'dashboard') {
       this.viewMode = mode;
-      if (mode === 'catalog') {
+      if (mode !== 'dashboard') {
         this.editingProductId = null;
       }
       this.notify();

@@ -21,7 +21,7 @@ function createMemoryStorage() {
   };
 }
 
-describe('Cau Chocolates Bali Catalog — Unit Tests', () => {
+describe('Cau Chocolates Bali Catalog â€” Unit Tests', () => {
   beforeEach(() => {
     globalThis.localStorage = createMemoryStorage();
   });
@@ -193,5 +193,41 @@ describe('Cau Chocolates Bali Catalog — Unit Tests', () => {
     );
     const storeInstance = new CatalogStore();
     expect(storeInstance.products).toHaveLength(8);
+  });
+  // 13-14: security tests (skema imageUrl berbahaya & encoding URL WhatsApp)
+  it('13. security test: menormalisasi imageUrl berbahaya (javascript: dan //host) ke path lokal aman', () => {
+    const xssScheme = validateProductInput({
+      nama: 'Cau Dark Test Image',
+      kategori: 'Dark Chocolate',
+      harga: 45000,
+      stok: 5,
+      imageUrl: 'javascript:alert(1)'
+    });
+    expect(xssScheme.valid).toBe(true);
+    expect(xssScheme.data.imageUrl).toBe('/assets/products/default-cacao.jpg');
+
+    const protoRelative = validateProductInput({
+      nama: 'Cau Dark Test Host',
+      kategori: 'Dark Chocolate',
+      harga: 45000,
+      stok: 5,
+      imageUrl: '//evil.example/payload.jpg'
+    });
+    expect(protoRelative.valid).toBe(true);
+    expect(protoRelative.data.imageUrl).toBe('/assets/products/default-cacao.jpg');
+  });
+
+  it('14. security test: mengenkode karakter kontrol/pembatas URL pada pesan WhatsApp', () => {
+    const product = {
+      nama: 'Cokelat & Kakao?raw=1#frag',
+      harga: 40000,
+      stok: 3
+    };
+    const url = buildWhatsAppUrl('6281234567890', product);
+    expect(url.startsWith('https://wa.me/6281234567890?text=')).toBe(true);
+    const queryPart = url.split('?text=')[1];
+    expect(queryPart).not.toContain('&');
+    expect(queryPart).not.toContain('#');
+    expect(decodeURIComponent(queryPart)).toContain('Cokelat & Kakao?raw=1#frag');
   });
 });

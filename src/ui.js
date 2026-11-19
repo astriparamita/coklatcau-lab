@@ -30,6 +30,86 @@ export function buildWhatsAppUrl(nomor, produk) {
   return `https://wa.me/${validPhone}?text=${encodeURIComponent(message)}`;
 }
 
+function createShowcaseBannerSvg() {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="420" viewBox="0 0 1120 420">
+      <defs>
+        <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#F5EFE6"/>
+          <stop offset="100%" stop-color="#E8DEC9"/>
+        </linearGradient>
+        <linearGradient id="tableGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#B98350"/>
+          <stop offset="100%" stop-color="#8C582B"/>
+        </linearGradient>
+      </defs>
+      <!-- Latar Dinding & Meja Kayu -->
+      <rect width="1120" height="315" fill="url(#wallGrad)"/>
+      <rect y="315" width="1120" height="105" fill="url(#tableGrad)"/>
+      <line x1="0" y1="315" x2="1120" y2="315" stroke="#73451E" stroke-width="3"/>
+
+      <!-- Layar Katalog / Tablet di Kiri -->
+      <rect x="74" y="138" width="236" height="156" rx="10" fill="#233329"/>
+      <rect x="84" y="148" width="216" height="134" rx="4" fill="#FAF6F0"/>
+      <rect x="84" y="148" width="216" height="22" fill="#2D4F3E"/>
+      <rect x="96" y="180" width="88" height="46" rx="6" fill="#E6DAC8"/>
+      <rect x="194" y="180" width="94" height="12" rx="3" fill="#2D4F3E"/>
+      <rect x="194" y="198" width="76" height="8" rx="3" fill="#8A5A19"/>
+      <rect x="194" y="212" width="84" height="8" rx="3" fill="#B6A895"/>
+      <rect x="96" y="238" width="192" height="32" rx="6" fill="#F3ECE1" stroke="#DFD4C3"/>
+      <path d="M56 294 L328 294 L314 314 L70 314 Z" fill="#D5D2CC"/>
+
+      <!-- Pouch Putih Besar (Cocoa Powder) -->
+      <rect x="348" y="106" width="138" height="214" rx="16" fill="#FFFFFF" stroke="#DFD4C3" stroke-width="2"/>
+      <rect x="366" y="148" width="102" height="34" rx="6" fill="#2D4F3E"/>
+      <text x="417" y="169" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">CAU COCOA</text>
+      <rect x="366" y="192" width="102" height="86" rx="8" fill="#F3ECE1"/>
+      <ellipse cx="417" cy="235" rx="20" ry="28" fill="#4A3222"/>
+
+      <!-- Tanaman Kakao / Sukulen Mini -->
+      <rect x="506" y="248" width="66" height="72" rx="10" fill="#233329"/>
+      <path d="M539 248 C520 220, 508 198, 522 184 C532 198, 536 222, 539 248 Z" fill="#2D4F3E"/>
+      <path d="M539 248 C535 212, 538 182, 546 172 C552 188, 548 218, 539 248 Z" fill="#3E6B54"/>
+      <path d="M539 248 C556 218, 572 198, 560 184 C548 196, 544 222, 539 248 Z" fill="#2D4F3E"/>
+
+      <!-- 4 Kemasan Kraft Cokelat Artisan di Kanan -->
+      <g transform="translate(596, 134)">
+        <rect width="106" height="186" rx="12" fill="#D7B48A" stroke="#B68E60" stroke-width="2"/>
+        <rect x="14" y="34" width="78" height="26" rx="5" fill="#2D4F3E"/>
+        <text x="53" y="51" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">DARK 80%</text>
+        <rect x="14" y="70" width="78" height="82" rx="6" fill="#FAF6F0"/>
+        <ellipse cx="53" cy="111" rx="16" ry="23" fill="#3B2314"/>
+      </g>
+
+      <g transform="translate(714, 146)">
+        <rect width="104" height="178" rx="12" fill="#DFC099" stroke="#B68E60" stroke-width="2"/>
+        <rect x="13" y="32" width="78" height="26" rx="5" fill="#4A3222"/>
+        <text x="52" y="49" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">MILK CHOC</text>
+        <rect x="13" y="68" width="78" height="78" rx="6" fill="#FAF6F0"/>
+        <ellipse cx="52" cy="107" rx="16" ry="22" fill="#6E472B"/>
+      </g>
+
+      <g transform="translate(830, 136)">
+        <rect width="106" height="186" rx="12" fill="#D2AC7E" stroke="#B68E60" stroke-width="2"/>
+        <rect x="14" y="34" width="78" height="26" rx="5" fill="#2D4F3E"/>
+        <text x="53" y="51" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">BALI GINGER</text>
+        <rect x="14" y="70" width="78" height="82" rx="6" fill="#FAF6F0"/>
+        <ellipse cx="53" cy="111" rx="16" ry="23" fill="#4A3222"/>
+      </g>
+
+      <g transform="translate(948, 152)">
+        <rect width="98" height="172" rx="12" fill="#DCBC94" stroke="#B68E60" stroke-width="2"/>
+        <rect x="12" y="30" width="74" height="24" rx="5" fill="#8A5A19"/>
+        <text x="49" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF">COCOA TEA</text>
+        <rect x="12" y="64" width="74" height="76" rx="6" fill="#FAF6F0"/>
+        <ellipse cx="49" cy="102" rx="15" ry="21" fill="#2D4F3E"/>
+      </g>
+    </svg>
+  `.trim();
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
 function el(tag, options = {}, children = []) {
   const node = document.createElement(tag);
   if (options.className) node.className = options.className;
@@ -53,7 +133,9 @@ export function renderApp(root, store) {
   const header = renderNavbar(store);
   const main = el('main', { className: 'container main-content' });
 
-  if (store.viewMode === 'catalog') {
+  if (store.viewMode === 'info') {
+    main.appendChild(renderInfoDashboard(store));
+  } else if (store.viewMode === 'catalog') {
     main.appendChild(renderHero(store));
     main.appendChild(renderToolbar(store));
     main.appendChild(renderProductGrid(store));
@@ -65,11 +147,11 @@ export function renderApp(root, store) {
     el('div', { className: 'container footer-inner' }, [
       el('p', {
         className: 'footer-brand',
-        text: `${STORE_INFO.subtitle} â€” ${STORE_INFO.address}`
+        text: `${STORE_INFO.subtitle} — ${STORE_INFO.address}`
       }),
       el('p', {
         className: 'footer-note',
-        text: 'Katalog Digital UMKM â€¢ Data tersimpan lokal di peramban Anda'
+        text: 'Katalog Digital UMKM • Data tersimpan lokal di peramban Anda'
       })
     ])
   ]);
@@ -81,25 +163,38 @@ export function renderApp(root, store) {
 
 function renderNavbar(store) {
   const brandTitle = el('div', { className: 'brand-info' }, [
-    el('span', { className: 'brand-title', text: STORE_INFO.name }),
-    el('span', {
-      className: 'brand-subtitle',
-      text: 'Marga, Tabanan Â· Bali'
-    })
+    el('span', { className: 'brand-badge-icon', text: '🌿' }),
+    el('div', {}, [
+      el('span', { className: 'brand-title', text: STORE_INFO.name }),
+      el('span', {
+        className: 'brand-subtitle',
+        text: 'Marga, Tabanan · Bali'
+      })
+    ])
   ]);
 
-  const catalogBtn = el('button', {
-    className: `nav-tab ${store.viewMode === 'catalog' ? 'active' : ''}`,
-    text: 'Katalog Belanja',
+  const infoLink = el('button', {
+    className: `nav-link-item ${store.viewMode === 'info' ? 'active' : ''}`,
+    text: 'Beranda & Info',
+    attrs: {
+      type: 'button',
+      'aria-pressed': store.viewMode === 'info'
+    }
+  });
+  infoLink.addEventListener('click', () => store.setViewMode('info'));
+
+  const catalogLink = el('button', {
+    className: `nav-link-item ${store.viewMode === 'catalog' ? 'active' : ''}`,
+    text: 'Katalog Produk',
     attrs: {
       type: 'button',
       'aria-pressed': store.viewMode === 'catalog'
     }
   });
-  catalogBtn.addEventListener('click', () => store.setViewMode('catalog'));
+  catalogLink.addEventListener('click', () => store.setViewMode('catalog'));
 
   const dashboardBtn = el('button', {
-    className: `nav-tab ${store.viewMode === 'dashboard' ? 'active' : ''}`,
+    className: `nav-cta-outline ${store.viewMode === 'dashboard' ? 'active' : ''}`,
     text: 'Dashboard Demo',
     attrs: {
       type: 'button',
@@ -111,11 +206,134 @@ function renderNavbar(store) {
   return el('header', { className: 'navbar' }, [
     el('div', { className: 'container navbar-inner' }, [
       brandTitle,
-      el('nav', { className: 'nav-switcher', attrs: { 'aria-label': 'Mode Tampilan' } }, [
-        catalogBtn,
-        dashboardBtn
+      el('nav', { className: 'nav-center-links', attrs: { 'aria-label': 'Navigasi Utama' } }, [
+        infoLink,
+        catalogLink
+      ]),
+      el('div', { className: 'nav-right-action' }, [dashboardBtn])
+    ])
+  ]);
+}
+
+function renderInfoDashboard(store) {
+  const metrics = store.getMetrics();
+  const featuredProducts = store.products.filter((p) => p.unggulan).slice(0, 3);
+
+  const bannerImg = el('img', {
+    className: 'showcase-banner-img',
+    attrs: {
+      src: createShowcaseBannerSvg(),
+      alt: 'Etalase produk cokelat organik Cau Chocolates Bali di atas meja kayu'
+    }
+  });
+
+  const bannerCta = el('button', {
+    className: 'showcase-floating-cta',
+    text: 'Lihat Katalog Lengkap',
+    attrs: { type: 'button' }
+  });
+  bannerCta.addEventListener('click', () => store.setViewMode('catalog'));
+
+  const showcaseSection = el('section', {
+    className: 'showcase-wrapper',
+    attrs: { 'aria-labelledby': 'showcase-heading' }
+  }, [
+    el('div', { className: 'showcase-media-box' }, [bannerImg, bannerCta]),
+    el('div', { className: 'showcase-three-col' }, [
+      // Kolom Kiri: Judul Utama & Profil Singkat
+      el('div', { className: 'showcase-col-left' }, [
+        el('h1', {
+          className: 'showcase-main-title',
+          text: 'Cokelat Organik & Agrowisata Tabanan',
+          attrs: { id: 'showcase-heading' }
+        }),
+        el('p', {
+          className: 'showcase-body-text',
+          text: 'Cau Chocolates Factory & Restaurant mengolah biji kakao fermentasi pilihan dari perkebunan lokal Desa Cau, Marga, Tabanan menjadi cokelat artisan berkualitas tinggi.'
+        })
+      ]),
+
+      // Kolom Tengah: Kotak Ringkasan Stok & Tombol CTA Utama
+      el('div', { className: 'showcase-col-center' }, [
+        el('div', { className: 'summary-stats-box' }, [
+          el('div', { className: 'summary-box-title', text: 'Ringkasan Katalog Gerai' }),
+          el('div', { className: 'summary-stats-grid' }, [
+            el('div', { className: 'stat-pair' }, [
+              el('span', { className: 'stat-name', text: 'Varian Produk' }),
+              el('strong', { className: 'stat-val', text: `${metrics.totalProduk} Item` })
+            ]),
+            el('div', { className: 'stat-pair' }, [
+              el('span', { className: 'stat-name', text: 'Total Stok' }),
+              el('strong', { className: 'stat-val', text: `${metrics.totalStok} Unit` })
+            ]),
+            el('div', { className: 'stat-pair' }, [
+              el('span', { className: 'stat-name', text: 'Unggulan' }),
+              el('strong', { className: 'stat-val', text: `${metrics.produkUnggulan} Produk` })
+            ]),
+            el('div', { className: 'stat-pair' }, [
+              el('span', { className: 'stat-name', text: 'Stok Habis' }),
+              el('strong', {
+                className: `stat-val ${metrics.stokHabis > 0 ? 'text-danger' : ''}`,
+                text: `${metrics.stokHabis} Varian`
+              })
+            ])
+          ])
+        ]),
+        (() => {
+          const pillCta = el('button', {
+            className: 'btn btn-primary btn-pill-cta',
+            text: 'Buka Katalog Belanja',
+            attrs: { type: 'button' }
+          });
+          pillCta.addEventListener('click', () => store.setViewMode('catalog'));
+          return pillCta;
+        })()
+      ]),
+
+      // Kolom Kanan: Info Lokasi, Jam Buka & Pemesanan WhatsApp
+      el('div', { className: 'showcase-col-right' }, [
+        el('p', {
+          className: 'showcase-body-text',
+          text: `${STORE_INFO.address}. Buka setiap hari pukul 09.00 – 17.00 WITA untuk wisata edukasi kakao, restoran organik, dan pemesanan langsung melalui WhatsApp gerai.`
+        }),
+        (() => {
+          const manageLink = el('button', {
+            className: 'btn btn-secondary btn-sm-full',
+            text: 'Kelola Inventaris (Dashboard Demo)',
+            attrs: { type: 'button' }
+          });
+          manageLink.addEventListener('click', () => store.setViewMode('dashboard'));
+          return manageLink;
+        })()
       ])
     ])
+  ]);
+
+  const previewHeader = el('div', { className: 'dashboard-header' }, [
+    el('div', {}, [
+      el('h2', { className: 'dashboard-title', text: 'Produk Unggulan Cau Chocolates Bali' }),
+      el('p', {
+        className: 'dashboard-subtitle',
+        text: 'Pilihan favorit wisatawan yang dapat langsung dipesan via WhatsApp.'
+      })
+    ]),
+    (() => {
+      const allBtn = el('button', {
+        className: 'btn btn-secondary',
+        text: `Lihat Semua (${store.products.length} Produk) →`,
+        attrs: { type: 'button' }
+      });
+      allBtn.addEventListener('click', () => store.setViewMode('catalog'));
+      return allBtn;
+    })()
+  ]);
+
+  const previewGrid = el('div', { className: 'product-grid' });
+  featuredProducts.forEach((product) => previewGrid.appendChild(renderProductCard(product)));
+
+  return el('div', { className: 'info-dashboard-wrapper' }, [
+    showcaseSection,
+    el('section', { className: 'featured-preview-section' }, [previewHeader, previewGrid])
   ]);
 }
 
@@ -300,7 +518,7 @@ function renderProductCard(product) {
 
   const badges = el('div', { className: 'card-badges' });
   if (product.unggulan) {
-    badges.appendChild(el('span', { className: 'badge badge-featured', text: 'â˜… Unggulan' }));
+    badges.appendChild(el('span', { className: 'badge badge-featured', text: '★ Unggulan' }));
   }
   badges.appendChild(
     el('span', {
@@ -604,7 +822,7 @@ function renderInventoryTable(store) {
       el('td', {}, [
         el('div', { className: 'table-prod-name', text: product.nama }),
         product.unggulan
-          ? el('span', { className: 'mini-badge', text: 'â˜… Unggulan' })
+          ? el('span', { className: 'mini-badge', text: '★ Unggulan' })
           : null
       ]),
       el('td', { text: product.kategori }),
